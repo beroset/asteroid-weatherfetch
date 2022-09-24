@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(asteroid-helloworld
+project(asteroid-weatherfetch
 	VERSION 0.0.1
-	DESCRIPTION "Sample application to get started on Asteroid")
+	DESCRIPTION "Fetch weather data from the internet for AsteroidOS")
 
 find_package(ECM REQUIRED NO_MODULE)
 find_package(AsteroidApp REQUIRED)
@@ -17,7 +17,7 @@ include(AsteroidTranslations)
 
 add_subdirectory(src)
 
-generate_desktop(${CMAKE_SOURCE_DIR} asteroid-helloworld)
+generate_desktop(${CMAKE_SOURCE_DIR} asteroid-weatherfetch)
 
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
 

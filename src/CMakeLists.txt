@@ -1,8 +1,8 @@
-add_library(asteroid-helloworld main.cpp resources.qrc)
-set_target_properties(asteroid-helloworld PROPERTIES PREFIX "" SUFFIX "")
+add_library(asteroid-weatherfetch main.cpp resources.qrc)
+set_target_properties(asteroid-weatherfetch PROPERTIES PREFIX "" SUFFIX "")
 
-target_link_libraries(asteroid-helloworld PUBLIC
+target_link_libraries(asteroid-weatherfetch PUBLIC
 	AsteroidApp)
 
-install(TARGETS asteroid-helloworld
+install(TARGETS asteroid-weatherfetch
 	DESTINATION ${CMAKE_INSTALL_BINDIR})
