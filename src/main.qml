@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2018 - Florent Revest <revestflo@gmail.com>
+ * Copyright (C) 2028 - Ed Beroset <beroset@ieee.org>
+ *               2018 - Florent Revest <revestflo@gmail.com>
  *               2016 - Andrew Branson <andrew.branson@jollamobile.com>
  *                      Ruslan N. Marchenko <me@ruff.mobi>
  *
