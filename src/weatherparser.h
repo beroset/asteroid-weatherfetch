@@ -22,13 +22,12 @@
 #include <QObject>
 #include <QtQml>
 
-class WeatherParser : public QObject
+class Q_DECL_EXPORT WeatherParser : public QObject
 {
     Q_OBJECT
-    Q_INVOKABLE void updateWeather(QString weatherJson);
 
 public:
-    WeatherParser(QObject *parent = NULL);
+    Q_INVOKABLE void updateWeather(QString cityname, QString weatherJson);
 
 private slots:
 
