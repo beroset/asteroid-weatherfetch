@@ -16,17 +16,54 @@
  *
  */
 
+#include <giomm.h>
 #include <QDebug>
 #include "weatherparser.h"
 
-WeatherParser::WeatherParser(QObject *parent) :
-    QObject(parent)
-{
+static void setCityName(const QString &cityName) {
+        const Glib::RefPtr<Gio::Settings> settings = Gio::Settings::create("org.asteroidos.weather");
+        settings->set_string("city-name", cityName.toUtf8().data()); 
 }
 
-
-void WeatherParser::updateWeather(QString weatherJson)
+/*!
+ * \brief Convert JSON weather string to settings for asteroid-weather
+ *
+ * \param weatherJson String containing weather JSON.  An example of the
+ * minimum acceptable string: 
+ *   '{"daily":[
+ *      {"temp":{"min":289.19,"max":298.9}},{"weather":[{"id":800}]},
+ *      {"temp":{"min":290.25,"max":300.2}},{"weather":[{"id":800}]}
+ *    ]}'
+ *  see https://openweathermap.org/api/one-call-api for full spec
+ */
+static void parseWeatherJson(const QString &weatherJson)
 {
-    qWarning("Json weather string: '%s'",
-                 weatherJson.toStdString().c_str());
+    constexpr int maxWeatherDays{5};
+    QJsonParseError parseError;
+    auto json = QJsonDocument::fromJson(weatherJson.toUtf8(), &parseError);
+    if (json.isNull()) {
+        qWarning() << "JSON parse error:  " << parseError.errorString();
+    }
+    auto daily = json["daily"].toArray();
+    int count = std::min(maxWeatherDays, daily.count());
+    for (int i = 0; i < count; ++i) {
+        const Glib::RefPtr<Gio::Settings> settings = Gio::Settings::create("org.asteroidos.weather.day" + std::to_string(i));
+        auto day = daily.at(i).toObject();
+        short low = day["temp"].toObject()["min"].toDouble();
+        settings->set_int("min-temp", low);
+        short high = day["temp"].toObject()["max"].toDouble();
+        settings->set_int("max-temp", high);
+        short icon = day["weather"].toArray()[0].toObject()["id"].toInt();
+        settings->set_int("id", icon);
+    }
+    const Glib::RefPtr<Gio::Settings> settings = Gio::Settings::create("org.asteroidos.weather");
+    settings->set_int("timestamp-day0", (int)time(NULL));
+}
+
+void WeatherParser::updateWeather(QString cityname, QString weatherJson)
+{
+    qDebug("Cityname: '%s'", cityname.toStdString().c_str());
+    setCityName(cityname);
+    qDebug("Json weather string: '%s'", weatherJson.toStdString().c_str());
+    parseWeatherJson(weatherJson);
 }
