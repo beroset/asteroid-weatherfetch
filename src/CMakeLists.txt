@@ -3,6 +3,7 @@ set_target_properties(asteroid-weatherfetch PROPERTIES PREFIX "" SUFFIX "")
 
 target_link_libraries(asteroid-weatherfetch PUBLIC
         Qt5::Qml
+	PkgConfig::GIOMM
 	AsteroidApp)
 
 install(TARGETS asteroid-weatherfetch
