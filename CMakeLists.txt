@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
 
 project(asteroid-weatherfetch
-	VERSION 0.0.1
+	VERSION 0.0.2
 	DESCRIPTION "Fetch weather data from the internet for AsteroidOS")
 
 find_package(ECM REQUIRED NO_MODULE)
@@ -14,6 +14,17 @@ include(GNUInstallDirs)
 include(ECMFindQmlModule)
 include(AsteroidCMakeSettings)
 include(AsteroidTranslations)
+
+find_package(Qt5 COMPONENTS Core Qml REQUIRED)
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(GIOMM giomm-2.4 REQUIRED IMPORTED_TARGET)
+set_property(GLOBAL APPEND PROPERTY _CMAKE_giomm-2.4_TYPE REQUIRED)
+
+if(GIOMM_FOUND)
+	set_property(GLOBAL APPEND PROPERTY PACKAGES_FOUND giomm-2.4)
+else()
+	set_property(GLOBAL APPEND PROPERTY PACKAGES_NOT_FOUND giomm-2.4)
+endif()
 
 add_subdirectory(src)
 
