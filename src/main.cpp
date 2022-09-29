@@ -23,25 +23,13 @@
 #include <asteroidapp.h>
 
 #include "weatherparser.h"
-#if 0
-#include "tilttowake.h"
-#include "taptowake.h"
-#endif
 
 int main(int argc, char *argv[])
 {
     QScopedPointer<QGuiApplication> app(AsteroidApp::application(argc, argv));
     QScopedPointer<QQuickView> view(AsteroidApp::createView());
     qmlRegisterType<WeatherParser>("org.asteroid.weatherfetch", 1, 0, "WeatherParser");
-#if 0
-    qmlRegisterType<VolumeControl>("org.asteroid.settings", 1, 0, "VolumeControl");
-    qmlRegisterType<TapToWake>("org.asteroid.settings", 1, 0, "TapToWake");
-#endif
-    view->setSource(QUrl("qrc:/qml/main.qml"));
-#if 0
-    view->rootContext()->setContextProperty("qtVersion", QString(qVersion()));
-    view->rootContext()->setContextProperty("kernelVersion", QString(buf.release));
-#endif
+    view->setSource(QUrl("qrc:/main.qml"));
     view->resize(app->primaryScreen()->size());
     view->show();
     return app->exec();
