@@ -20,6 +20,7 @@ import QtQml.Models 2.15
 import org.asteroid.controls 1.0
 import org.asteroid.weatherfetch 1.0
 import Nemo.Configuration 1.0
+import Nemo.Notifications 1.0
 import Qt.labs.settings 1.0
 
 Application {
@@ -229,10 +230,17 @@ Application {
                     iconName: "ios-arrow-dropright"
                     height: parent.height
                     width: height
+                    Notification {
+                        id: donemessage
+                        appName: "asteroid-weatherfetch"
+                        previewSummary: "Weather fetch succeeded"
+                    }
                     onClicked: {
                         cityName.value = locations.get(0).name;
                         console.log("getting weather for ", locations.get(0).name, "( ", locations.get(0).lat, ", ", locations.get(0).lng, " )");
                         getWeatherForecast(locations.get(0).lat, locations.get(0).lng, settings.apikey)
+                        donemessage.previewBody = cityName.value;
+                        donemessage.publish()
                     }
                 }
             }
