@@ -33,7 +33,6 @@ Application {
 
     ConfigurationValue {
         id: cityName
-
         key: "/org/asteroidos/weather/city-name"
         //% "Unknown"
         defaultValue: qsTrId("id-unknown")
@@ -71,7 +70,7 @@ Application {
 
             Rectangle {
                 id: content
-                anchors { 
+                anchors {
                     horizontalCenter: parent.horizontalCenter
                     verticalCenter: parent.verticalCenter
                 }
@@ -103,12 +102,12 @@ Application {
                     id: databox
                     anchors { fill: parent; margins: 2 }
 
-                    Label { 
+                    Label {
                         id: loclabel
                         color: "black"
                         text: "<b>" + name + "</b>"
                     }
-                    Text { 
+                    Text {
                         text: lat  + " " + lng
                     }
                 }
