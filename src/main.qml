@@ -66,6 +66,7 @@ Application {
             }
             onReleased: {
                 held = false
+                saveModel()
             }
 
             Rectangle {
@@ -260,7 +261,7 @@ Application {
         }
     }
 
-    Component.onDestruction: {
+    function saveModel() {
         var datamodel = []
         for (var i = 0; i < locations.count; ++i) {
             datamodel.push(locations.get(i))
