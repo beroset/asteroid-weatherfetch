@@ -18,7 +18,7 @@
 
 #include <giomm.h>
 #include <QDebug>
-#include "weatherparser.h"
+#include "WeatherParser.h"
 
 static void setCityName(const QString &cityName) {
         const Glib::RefPtr<Gio::Settings> settings = Gio::Settings::create("org.asteroidos.weather");

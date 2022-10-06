@@ -22,7 +22,7 @@
 
 #include <asteroidapp.h>
 
-#include "weatherparser.h"
+#include "WeatherParser.h"
 
 int main(int argc, char *argv[])
 {
