@@ -30,6 +30,8 @@ Application {
 
     property var savedlocations: ""
     property int locationPrecision: 4
+    property bool goodFetch: false
+    property string newCityName: ""
 
     ConfigurationValue {
         id: cityName
@@ -214,9 +216,37 @@ Application {
                 }
             }
 
-            Row {
+            Item {
                 width: parent.width
                 height: Dims.l(20)
+
+                MouseArea {
+                    id: mouseArea
+                    anchors.fill: parent
+                    hoverEnabled: true
+
+                    Notification {
+                        id: donemessage
+                        appName: "asteroid-weatherfetch"
+                        //% "Weather data unchanged"
+                        previewBody: goodFetch ? newCityName : qsTrId("id-weatherfetch-unchanged")
+                        //% "Weather fetch succeeded"
+                        previewSummary: goodFetch ? qsTrId("id-weatherfetch-success") :
+                            //% "Weather fetch failed"
+                            qsTrId("id-weatherfetch-fail")
+                    }
+                    onClicked: {
+                        newCityName = locations.get(0).name
+                        console.log("getting weather for ", newCityName, "( ", locations.get(0).lat, ", ", locations.get(0).lng, " )");
+                        getWeatherForecast(locations.get(0).lat, locations.get(0).lng, settings.apikey)
+                    }
+                }
+
+                Rectangle {
+                    anchors.fill: parent
+                    color: "white"
+                    opacity: mouseArea.containsPress ? 0.2 : 0
+                }
                 Label {
                     //% "Fetch weather data"
                     text: qsTrId("id-weatherfetch-fetch")
@@ -225,23 +255,12 @@ Application {
                     width: parent.width * 0.7143
                     wrapMode: Text.Wrap
                 }
-                IconButton {
+                Icon {
                     id: fetchButton
-                    iconName: "ios-arrow-dropright"
+                    name: "ios-arrow-dropright"
                     height: parent.height
                     width: height
-                    Notification {
-                        id: donemessage
-                        appName: "asteroid-weatherfetch"
-                        previewSummary: "Weather fetch succeeded"
-                    }
-                    onClicked: {
-                        cityName.value = locations.get(0).name;
-                        console.log("getting weather for ", locations.get(0).name, "( ", locations.get(0).lat, ", ", locations.get(0).lng, " )");
-                        getWeatherForecast(locations.get(0).lat, locations.get(0).lng, settings.apikey)
-                        donemessage.previewBody = cityName.value;
-                        donemessage.publish()
-                    }
+                    anchors.right: parent.right
                 }
             }
 
@@ -271,8 +290,15 @@ Application {
     function getWeatherForecast(lat, lon, apikey) {
         const xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
-            if (xhttp.readyState == XMLHttpRequest.DONE && xhttp.status == 200) {
-                updateForecast(xhttp.responseText.toString());
+            if (xhttp.readyState === XMLHttpRequest.DONE)  {
+                if (xhttp.status === 200) {
+                    updateForecast(xhttp.responseText.toString());
+                    goodFetch = true;
+                    donemessage.publish();
+                } else {
+                    goodFetch = false;
+                    donemessage.publish();
+                }
             }
         };
         xhttp.onerror = function() {
@@ -286,6 +312,6 @@ Application {
     }
 
     function updateForecast(forecast) {
-        weatherParser.updateWeather(cityName.value, forecast);
+        weatherParser.updateWeather(newCityName, forecast);
     }
 }
