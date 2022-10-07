@@ -19,6 +19,8 @@
 #include <giomm.h>
 #include "WeatherParser.h"
 #include <QDebug>
+#include <thread>
+#include <chrono>
 
 void WeatherParser::setCityName(const QString &cityName)
 {
@@ -86,6 +88,10 @@ void WeatherParser::update(QString* cityname, QString* weatherJson)
     setCityName(*cityname);
     qDebug() << "Json weather string: " << *weatherJson;
     parseWeatherJson(*weatherJson);
+    // TODO: this is an ugly hack.  Without it, the settings
+    // do not seem to take effect, but I can find no reason
+    // for this.
+    std::this_thread::sleep_for(200ms);
     emit done();
 }
 
