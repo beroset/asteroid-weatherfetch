@@ -15,7 +15,7 @@ include(ECMFindQmlModule)
 include(AsteroidCMakeSettings)
 include(AsteroidTranslations)
 
-find_package(Qt5 COMPONENTS Core Qml REQUIRED)
+find_package(Qt5 COMPONENTS Core Qml Network REQUIRED)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(GIOMM giomm-2.4 REQUIRED IMPORTED_TARGET)
 set_property(GLOBAL APPEND PROPERTY _CMAKE_giomm-2.4_TYPE REQUIRED)
