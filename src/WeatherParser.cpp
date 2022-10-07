@@ -17,26 +17,27 @@
  */
 
 #include <giomm.h>
-#include <QDebug>
 #include "WeatherParser.h"
+#include <QDebug>
 
-static void setCityName(const QString &cityName) {
-        const Glib::RefPtr<Gio::Settings> settings = Gio::Settings::create("org.asteroidos.weather");
-        settings->set_string("city-name", cityName.toUtf8().data()); 
+void WeatherParser::setCityName(const QString &cityName)
+{
+    const Glib::RefPtr<Gio::Settings> settings = Gio::Settings::create("org.asteroidos.weather");
+    settings->set_string("city-name", cityName.toUtf8().data());
 }
 
 /*!
  * \brief Convert JSON weather string to settings for asteroid-weather
  *
  * \param weatherJson String containing weather JSON.  An example of the
- * minimum acceptable string: 
+ * minimum acceptable string:
  *   '{"daily":[
  *      {"temp":{"min":289.19,"max":298.9}},{"weather":[{"id":800}]},
  *      {"temp":{"min":290.25,"max":300.2}},{"weather":[{"id":800}]}
  *    ]}'
  *  see https://openweathermap.org/api/one-call-api for full spec
  */
-static void parseWeatherJson(const QString &weatherJson)
+void WeatherParser::parseWeatherJson(const QString &weatherJson)
 {
     constexpr int maxWeatherDays{5};
     QJsonParseError parseError;
@@ -60,10 +61,31 @@ static void parseWeatherJson(const QString &weatherJson)
     settings->set_int("timestamp-day0", (int)time(NULL));
 }
 
+WeatherParser::WeatherParser()
+{
+    Glib::init();
+    Gio::init();
+}
+
 void WeatherParser::updateWeather(QString cityname, QString weatherJson)
 {
-    qDebug("Cityname: '%s'", cityname.toStdString().c_str());
+    qDebug() << "uw Cityname:" << cityname;
     setCityName(cityname);
-    qDebug("Json weather string: '%s'", weatherJson.toStdString().c_str());
+    qDebug() << "uw Json weather string:" << weatherJson;
     parseWeatherJson(weatherJson);
 }
+
+void WeatherParser::update(QString* cityname, QString* weatherJson)
+{
+    using namespace std::chrono_literals;
+    if (cityname == nullptr || weatherJson == nullptr) {
+        qDebug() << "Error!  arguments to WeatherParser::update were null";
+        emit done();
+    }
+    qDebug() << "Cityname: " << *cityname;
+    setCityName(*cityname);
+    qDebug() << "Json weather string: " << *weatherJson;
+    parseWeatherJson(*weatherJson);
+    emit done();
+}
+

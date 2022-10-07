@@ -27,13 +27,18 @@ class Q_DECL_EXPORT WeatherParser : public QObject
     Q_OBJECT
 
 public:
+    WeatherParser();
     Q_INVOKABLE void updateWeather(QString cityname, QString weatherJson);
 
-private slots:
+public slots:
+    void update(QString* cityname, QString* weatherJson);
 
 signals:
+    void done();
 
 private:
+    void setCityName(const QString &cityName);
+    void parseWeatherJson(const QString &weatherJson);
 };
 
 #endif
