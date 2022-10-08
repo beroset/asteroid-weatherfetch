@@ -86,6 +86,7 @@ void WeatherParser::update(QString* cityname, QString* weatherJson)
     setCityName(*cityname);
     qDebug() << "Json weather string: " << *weatherJson;
     parseWeatherJson(*weatherJson);
+    g_settings_sync();
     emit done();
 }
 
