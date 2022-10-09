@@ -28,6 +28,7 @@ endif()
 
 add_subdirectory(src)
 
+build_translations(i18n)
 generate_desktop(${CMAKE_SOURCE_DIR} asteroid-weatherfetch)
 
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
