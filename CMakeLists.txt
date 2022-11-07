@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
 
 project(asteroid-weatherfetch
-	VERSION 0.0.2
+	VERSION 0.0.3
 	DESCRIPTION "Fetch weather data from the internet for AsteroidOS")
 
 find_package(ECM REQUIRED NO_MODULE)
@@ -38,5 +38,6 @@ string(TOLOWER "${CMAKE_PROJECT_NAME}" lcproject_name)
 set(CPACK_DEBIAN_FILE_NAME "${lcproject_name}-${CMAKE_PROJECT_VERSION}.ipk")
 set(CPACK_STRIP_FILES TRUE)
 set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE armv7vehf-neon)
+set(CPACK_DEBIAN_PACKAGE_DEPENDS "nemo-qml-plugin-notifications")
 set(CPACK_PACKAGE_CONTACT beroset@ieee.org)
 include(CPack)
