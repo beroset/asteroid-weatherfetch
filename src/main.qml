@@ -40,12 +40,12 @@ Application {
         defaultValue: qsTrId("id-unknown")
     }
 
-    Component  { id: locationDialog;   LocationDialog   { } }
-
     LayerStack {
         id: layerStack
         firstPage: firstPageComponent
     }
+
+    Component  { id: locationDialog;   LocationDialog   { } }
 
     WeatherParser { id: weatherParser }
 
@@ -192,15 +192,13 @@ Application {
                             iconName: "ios-add-circle-outline"
                             onClicked: {
                                 console.log("locations count = ", locations.count)
-                                var newloc = layerStack.push(locationDialog);
-                                newloc.activated.connect(selected)
-                                function selected(name, lat, lng) {
-                                    newloc.activated.disconnect(selected);
+                                function addLoc(name, lat, lng) {
                                     console.log(name, lat, lng);
                                     locations.append({"name":name,
                                             "lat":lat.toFixed(locationPrecision).toString(),
                                             "lng":lng.toFixed(locationPrecision).toString()} );
                                 }
+                                layerStack.push(locationDialog, {selected: addLoc});
                             }
                         }
                     }
