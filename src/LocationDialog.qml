@@ -23,13 +23,13 @@ import QtQuick.VirtualKeyboard.Settings 2.15
 
 Item {
     id: root
-    signal activated(string placename, string lat, string lon)
+    property var selected
     property alias placename: locationName.text
 
-    InputPanel {
-        id: kbd
-        anchors.centerIn: parent
-        width: Dims.w(95)
+
+    Component.onCompleted: {
+        VirtualKeyboardSettings.styleName = "watch"
+        VirtualKeyboardSettings.fullScreenMode = true
     }
 
     Flickable {
@@ -37,43 +37,55 @@ Item {
         contentHeight: mycol.implicitHeight
         boundsBehavior: Flickable.DragOverBounds
         flickableDirection: Flickable.HorizontalAndVerticalFlick
-        anchors.margins: Dims.l(15)
 
         Column {
             id: mycol
-            anchors.fill: parent
+            anchors {
+                fill: parent
+                margins: Dims.l(15)
+            }
 
             TextField {
                 id: locationName
-                width: Dims.w(80)
+                width: parent.width
                 //% "Location Name"
                 previewText: qsTrId("id-location-name-field")
-                enterKeyAction: EnterKeyAction.Next
             }
 
             TextField {
                 id: latfield
-                width: Dims.w(80)
+                width: parent.width
                 //% "Location Latitude"
                 previewText: qsTrId("id-latitude-field")
                 inputMethodHints: Qt.ImhFormattedNumbersOnly
-                enterKeyAction: EnterKeyAction.Next
             }
 
             TextField {
                 id: lonfield
-                width: Dims.w(80)
+                width: parent.width
                 //% "Location Longitude"
                 previewText: qsTrId("id-longitude-field")
                 inputMethodHints: Qt.ImhFormattedNumbersOnly
-                enterKeyAction: EnterKeyAction.Next
             }
             IconButton {
                 id: acceptButton
                 anchors.horizontalCenter: parent.horizontalCenter
                 iconName: "ios-add-circle-outline"
-                onClicked: activated(placename, latfield.text, lonfield.text)
+                onClicked: {
+                    selected(placename, parseFloat(latfield.text), parseFloat(lonfield.text))
+                    layerStack.pop(layerStack.currentLayer)
+                }
             }
         }
+    }
+    InputPanel {
+        id: kbd
+        anchors {
+            bottom: parent.bottom
+            horizontalCenter: parent.horizontalCenter
+            margins: Dims.w(15)
+        }
+        width: Dims.w(85)
+        visible: active
     }
 }
