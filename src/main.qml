@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2028 - Ed Beroset <beroset@ieee.org>
+ * Copyright (C) 2022 - Ed Beroset <beroset@ieee.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
