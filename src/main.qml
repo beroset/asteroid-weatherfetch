@@ -231,6 +231,12 @@ Application {
                             hoverEnabled: true
 
                             Notification {
+                                id: startmessage
+                                appName: "asteroid-weatherfetch"
+                                //% "Attempting to fetch weather data"
+                                previewBody: qsTrId("id-weatherfetch-trying")
+                            }
+                            Notification {
                                 id: donemessage
                                 appName: "asteroid-weatherfetch"
                                 //% "Weather data unchanged"
@@ -242,6 +248,8 @@ Application {
                             }
                             onClicked: {
                                 newCityName = locations.get(0).name
+                                startmessage.previewSummary = newCityName
+                                startmessage.publish()
                                 console.log("getting weather for ", newCityName, "( ", locations.get(0).lat, ", ", locations.get(0).lng, " )");
                                 getWeatherForecast(locations.get(0).lat, locations.get(0).lng, settings.apikey)
                             }
