@@ -54,7 +54,7 @@ Item {
             TextField {
                 id: latfield
                 width: Dims.w(80)
-                //% "Location Name"
+                //% "Location Latitude"
                 previewText: qsTrId("id-latitude-field")
                 inputMethodHints: Qt.ImhFormattedNumbersOnly
                 enterKeyAction: EnterKeyAction.Next
@@ -63,7 +63,7 @@ Item {
             TextField {
                 id: lonfield
                 width: Dims.w(80)
-                //% "Location Name"
+                //% "Location Longitude"
                 previewText: qsTrId("id-longitude-field")
                 inputMethodHints: Qt.ImhFormattedNumbersOnly
                 enterKeyAction: EnterKeyAction.Next
