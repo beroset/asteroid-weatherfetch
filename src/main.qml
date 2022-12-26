@@ -251,7 +251,7 @@ Application {
                                 startmessage.previewSummary = newCityName
                                 startmessage.publish()
                                 console.log("getting weather for ", newCityName, "( ", locations.get(0).lat, ", ", locations.get(0).lng, " )");
-                                getWeatherForecast(locations.get(0).lat, locations.get(0).lng, settings.apikey)
+                                getWeatherForecast(locations.get(0).lat, locations.get(0).lng, settings.apikey, donemessage)
                             }
                         }
 
@@ -302,7 +302,7 @@ Application {
         savedlocations = JSON.stringify(datamodel)
     }
 
-    function getWeatherForecast(lat, lon, apikey) {
+    function getWeatherForecast(lat, lon, apikey, donemessage) {
         const xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
             if (xhttp.readyState === XMLHttpRequest.DONE)  {
