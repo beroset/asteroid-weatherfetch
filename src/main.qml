@@ -40,6 +40,13 @@ Application {
         defaultValue: qsTrId("id-unknown")
     }
 
+    Component  { id: locationDialog;   LocationDialog   { } }
+
+    LayerStack {
+        id: layerStack
+        firstPage: firstPageComponent
+    }
+
     WeatherParser { id: weatherParser }
 
     Settings {
@@ -136,135 +143,135 @@ Application {
         delegate: dragDelegate
     }
 
-    PageHeader {
-        //% "Fetch weather data"
-        text: qsTrId("id-weatherfetch")
-    }
-
-    Flickable {
-        anchors.fill: parent
-        contentHeight: onOffSettings.implicitHeight
-        boundsBehavior: Flickable.DragOverBounds
-        flickableDirection: Flickable.VerticalFlick
-        anchors.margins: Dims.l(15)
-
-        Column {
-            id: onOffSettings
-            anchors.fill: parent
-
-            Rectangle {
-                id: listroot
-                width: parent.width
-                height: Dims.h(40)
-
-                ListView {
-                    id: locList
-                    anchors.fill: parent
-                    anchors.margins: 2
-                    model: visualModel
-                    spacing: 4
-                }
+    Component {
+        id: firstPageComponent
+        Item {
+            PageHeader {
+                //% "Fetch weather data"
+                text: qsTrId("id-weatherfetch")
             }
-            Item { width: parent.width; height: Dims.l(14) }
-            Row {
-                Label {
-                    //% "Add location"
-                    text: qsTrId("id-weatherfetch-addlocation")
-                    font.pixelSize: parent.height * 0.3
-                    verticalAlignment: Text.AlignVCenter
-                    wrapMode: Text.Wrap
-                    width: parent.width * 0.7143
-                    height: parent.height
-                }
 
-                IconButton {
-                    id: addButton
-                    iconName: "ios-add-circle-outline"
-                    onClicked: {
-                        var zoomlat = locations.count ? parseFloat(locations.get(0).lat): 51.5
-                        var zoomlong = locations.count ? parseFloat(locations.get(0).lng): -0.144
-                        console.log("locations count = ", locations.count)
-                        console.log("zoomlat = ", zoomlat)
-                        console.log("zoomlong = ", zoomlong)
-                        console.log("resolved url = ", Qt.resolvedUrl("LocationPicker.qml"))
-                        var newloc = layerStack.push(Qt.resolvedUrl("LocationPicker.qml"), {lat:zoomlat, lon:zoomlong});
-                        newloc.activated.connect(selected)
-                        function selected(name, lat, lng) {
-                            newloc.activated.disconnect(selected);
-                            console.log(name, lat, lng);
-                            locations.append({"name":name,
-                                    "lat":lat.toFixed(locationPrecision).toString(),
-                                    "lng":lng.toFixed(locationPrecision).toString()} );
+            Flickable {
+                anchors.fill: parent
+                contentHeight: onOffSettings.implicitHeight
+                boundsBehavior: Flickable.DragOverBounds
+                flickableDirection: Flickable.VerticalFlick
+                anchors.margins: Dims.l(15)
+
+                Column {
+                    id: onOffSettings
+                    anchors.fill: parent
+
+                    Rectangle {
+                        id: listroot
+                        width: parent.width
+                        height: Dims.h(40)
+
+                        ListView {
+                            id: locList
+                            anchors.fill: parent
+                            anchors.margins: 2
+                            model: visualModel
+                            spacing: 4
                         }
                     }
-                }
-            }
-            Row {
-                Label {
-                    //% "Delete last location"
-                    text: qsTrId("id-weatherfetch-dellocation")
-                    font.pixelSize: parent.height * 0.3
-                    verticalAlignment: Text.AlignVCenter
-                    wrapMode: Text.Wrap
-                    width: parent.width * 0.7143
-                    height: parent.height
-                }
-                IconButton {
-                    id: delButton
-                    iconName: "ios-remove-circle-outline"
-                    onClicked: locations.remove(locations.count - 1)
-                }
-            }
+                    Item { width: parent.width; height: Dims.l(14) }
+                    Row {
+                        Label {
+                            //% "Add location"
+                            text: qsTrId("id-weatherfetch-addlocation")
+                            font.pixelSize: parent.height * 0.3
+                            verticalAlignment: Text.AlignVCenter
+                            wrapMode: Text.Wrap
+                            width: parent.width * 0.7143
+                            height: parent.height
+                        }
 
-            Item {
-                width: parent.width
-                height: Dims.l(20)
-
-                MouseArea {
-                    id: mouseArea
-                    anchors.fill: parent
-                    hoverEnabled: true
-
-                    Notification {
-                        id: donemessage
-                        appName: "asteroid-weatherfetch"
-                        //% "Weather data unchanged"
-                        previewBody: goodFetch ? newCityName : qsTrId("id-weatherfetch-unchanged")
-                        //% "Weather fetch succeeded"
-                        previewSummary: goodFetch ? qsTrId("id-weatherfetch-success") :
-                            //% "Weather fetch failed"
-                            qsTrId("id-weatherfetch-fail")
+                        IconButton {
+                            id: addButton
+                            iconName: "ios-add-circle-outline"
+                            onClicked: {
+                                console.log("locations count = ", locations.count)
+                                var newloc = layerStack.push(locationDialog);
+                                newloc.activated.connect(selected)
+                                function selected(name, lat, lng) {
+                                    newloc.activated.disconnect(selected);
+                                    console.log(name, lat, lng);
+                                    locations.append({"name":name,
+                                            "lat":lat.toFixed(locationPrecision).toString(),
+                                            "lng":lng.toFixed(locationPrecision).toString()} );
+                                }
+                            }
+                        }
                     }
-                    onClicked: {
-                        newCityName = locations.get(0).name
-                        console.log("getting weather for ", newCityName, "( ", locations.get(0).lat, ", ", locations.get(0).lng, " )");
-                        getWeatherForecast(locations.get(0).lat, locations.get(0).lng, settings.apikey)
+                    Row {
+                        Label {
+                            //% "Delete last location"
+                            text: qsTrId("id-weatherfetch-dellocation")
+                            font.pixelSize: parent.height * 0.3
+                            verticalAlignment: Text.AlignVCenter
+                            wrapMode: Text.Wrap
+                            width: parent.width * 0.7143
+                            height: parent.height
+                        }
+                        IconButton {
+                            id: delButton
+                            iconName: "ios-remove-circle-outline"
+                            onClicked: locations.remove(locations.count - 1)
+                        }
                     }
-                }
 
-                Rectangle {
-                    anchors.fill: parent
-                    color: "white"
-                    opacity: mouseArea.containsPress ? 0.2 : 0
-                }
-                Label {
-                    //% "Fetch weather data"
-                    text: qsTrId("id-weatherfetch-fetch")
-                    font.pixelSize: Dims.l(6)
-                    verticalAlignment: Text.AlignVCenter
-                    width: parent.width * 0.7143
-                    wrapMode: Text.Wrap
-                }
-                Icon {
-                    id: fetchButton
-                    name: "ios-arrow-dropright"
-                    height: parent.height
-                    width: height
-                    anchors.right: parent.right
+                    Item {
+                        width: parent.width
+                        height: Dims.l(20)
+
+                        MouseArea {
+                            id: mouseArea
+                            anchors.fill: parent
+                            hoverEnabled: true
+
+                            Notification {
+                                id: donemessage
+                                appName: "asteroid-weatherfetch"
+                                //% "Weather data unchanged"
+                                previewBody: goodFetch ? newCityName : qsTrId("id-weatherfetch-unchanged")
+                                //% "Weather fetch succeeded"
+                                previewSummary: goodFetch ? qsTrId("id-weatherfetch-success") :
+                                    //% "Weather fetch failed"
+                                    qsTrId("id-weatherfetch-fail")
+                            }
+                            onClicked: {
+                                newCityName = locations.get(0).name
+                                console.log("getting weather for ", newCityName, "( ", locations.get(0).lat, ", ", locations.get(0).lng, " )");
+                                getWeatherForecast(locations.get(0).lat, locations.get(0).lng, settings.apikey)
+                            }
+                        }
+
+                        Rectangle {
+                            anchors.fill: parent
+                            color: "white"
+                            opacity: mouseArea.containsPress ? 0.2 : 0
+                        }
+                        Label {
+                            //% "Fetch weather data"
+                            text: qsTrId("id-weatherfetch-fetch")
+                            font.pixelSize: Dims.l(6)
+                            verticalAlignment: Text.AlignVCenter
+                            width: parent.width * 0.7143
+                            wrapMode: Text.Wrap
+                        }
+                        Icon {
+                            id: fetchButton
+                            name: "ios-arrow-dropright"
+                            height: parent.height
+                            width: height
+                            anchors.right: parent.right
+                        }
+                    }
+
+                    Item { width: parent.width; height: Dims.l(10) }
                 }
             }
-
-            Item { width: parent.width; height: Dims.l(10) }
         }
     }
 
