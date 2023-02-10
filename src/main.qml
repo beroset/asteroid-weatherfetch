@@ -176,48 +176,6 @@ Application {
                         }
                     }
                     Item { width: parent.width; height: Dims.l(14) }
-                    Row {
-                        Label {
-                            //% "Add location"
-                            text: qsTrId("id-weatherfetch-addlocation")
-                            font.pixelSize: parent.height * 0.3
-                            verticalAlignment: Text.AlignVCenter
-                            wrapMode: Text.Wrap
-                            width: parent.width * 0.7143
-                            height: parent.height
-                        }
-
-                        IconButton {
-                            id: addButton
-                            iconName: "ios-add-circle-outline"
-                            onClicked: {
-                                console.log("locations count = ", locations.count)
-                                function addLoc(name, lat, lng) {
-                                    console.log(name, lat, lng);
-                                    locations.append({"name":name,
-                                            "lat":lat.toFixed(locationPrecision).toString(),
-                                            "lng":lng.toFixed(locationPrecision).toString()} );
-                                }
-                                layerStack.push(locationDialog, {selected: addLoc});
-                            }
-                        }
-                    }
-                    Row {
-                        Label {
-                            //% "Delete last location"
-                            text: qsTrId("id-weatherfetch-dellocation")
-                            font.pixelSize: parent.height * 0.3
-                            verticalAlignment: Text.AlignVCenter
-                            wrapMode: Text.Wrap
-                            width: parent.width * 0.7143
-                            height: parent.height
-                        }
-                        IconButton {
-                            id: delButton
-                            iconName: "ios-remove-circle-outline"
-                            onClicked: locations.remove(locations.count - 1)
-                        }
-                    }
 
                     Item {
                         width: parent.width
@@ -272,6 +230,48 @@ Application {
                             height: parent.height
                             width: height
                             anchors.right: parent.right
+                        }
+                    }
+                    Row {
+                        Label {
+                            //% "Add location"
+                            text: qsTrId("id-weatherfetch-addlocation")
+                            font.pixelSize: parent.height * 0.3
+                            verticalAlignment: Text.AlignVCenter
+                            wrapMode: Text.Wrap
+                            width: parent.width * 0.7143
+                            height: parent.height
+                        }
+
+                        IconButton {
+                            id: addButton
+                            iconName: "ios-add-circle-outline"
+                            onClicked: {
+                                console.log("locations count = ", locations.count)
+                                function addLoc(name, lat, lng) {
+                                    console.log(name, lat, lng);
+                                    locations.append({"name":name,
+                                            "lat":lat.toFixed(locationPrecision).toString(),
+                                            "lng":lng.toFixed(locationPrecision).toString()} );
+                                }
+                                layerStack.push(locationDialog, {selected: addLoc});
+                            }
+                        }
+                    }
+                    Row {
+                        Label {
+                            //% "Delete last location"
+                            text: qsTrId("id-weatherfetch-dellocation")
+                            font.pixelSize: parent.height * 0.3
+                            verticalAlignment: Text.AlignVCenter
+                            wrapMode: Text.Wrap
+                            width: parent.width * 0.7143
+                            height: parent.height
+                        }
+                        IconButton {
+                            id: delButton
+                            iconName: "ios-remove-circle-outline"
+                            onClicked: locations.remove(locations.count - 1)
                         }
                     }
 
