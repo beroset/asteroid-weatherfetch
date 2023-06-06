@@ -32,12 +32,3 @@ build_translations(i18n)
 generate_desktop(${CMAKE_SOURCE_DIR} asteroid-weatherfetch)
 
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
-
-set(CPACK_GENERATOR "DEB")
-string(TOLOWER "${CMAKE_PROJECT_NAME}" lcproject_name)
-set(CPACK_DEBIAN_FILE_NAME "${lcproject_name}-${CMAKE_PROJECT_VERSION}.ipk")
-set(CPACK_STRIP_FILES TRUE)
-set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE armv7vehf-neon)
-set(CPACK_DEBIAN_PACKAGE_DEPENDS "nemo-qml-plugin-notifications")
-set(CPACK_PACKAGE_CONTACT beroset@ieee.org)
-include(CPack)
