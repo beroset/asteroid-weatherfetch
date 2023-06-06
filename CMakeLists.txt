@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
 
 project(asteroid-weatherfetch
-	VERSION 1.0.0
+	VERSION 1.0.1
 	DESCRIPTION "Fetch weather data from the internet for AsteroidOS")
 
 find_package(ECM REQUIRED NO_MODULE)
