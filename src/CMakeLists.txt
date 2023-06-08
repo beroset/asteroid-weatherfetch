@@ -6,6 +6,11 @@ target_link_libraries(asteroid-weatherfetch PUBLIC
         weatherfetch)
 
 add_library(weatherfetch WeatherParser.cpp)
+set_target_properties(weatherfetch PROPERTIES
+    SOVERSION 1
+    VERSION 1.0.1
+)
+
 target_link_libraries(weatherfetch PUBLIC Qt5::Qml
         PRIVATE Qt5::Core Qt5::Network PkgConfig::GIOMM)
 
