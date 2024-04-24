@@ -74,7 +74,6 @@ Application {
             }
             onReleased: {
                 held = false
-                saveModel()
             }
 
             Rectangle {
@@ -277,6 +276,9 @@ Application {
 
                     Item { width: parent.width; height: Dims.l(10) }
                 }
+            }
+            Component.onDestruction: {
+                saveModel()
             }
         }
     }
