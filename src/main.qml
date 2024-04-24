@@ -206,7 +206,7 @@ Application {
                                 startmessage.previewSummary = newCityName
                                 startmessage.publish()
                                 console.log("getting weather for ", newCityName, "( ", locations.get(0).lat, ", ", locations.get(0).lng, " )");
-                                getWeatherForecast(locations.get(0).lat, locations.get(0).lng, settings.apikey, donemessage)
+                                getWeatherForecast(newCityName, locations.get(0).lat, locations.get(0).lng, settings.apikey, donemessage)
                             }
                         }
 
@@ -302,7 +302,7 @@ Application {
         savedlocations = JSON.stringify(datamodel)
     }
 
-    function getWeatherForecast(lat, lon, apikey, donemessage) {
+    function getWeatherForecast(cityName, lat, lon, apikey, donemessage) {
         const xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
             if (xhttp.readyState === XMLHttpRequest.DONE)  {
@@ -319,8 +319,7 @@ Application {
         xhttp.onerror = function() {
             console.log("Error fetching weather data: ", xhttp.errorText);
         }
-        var omit = "current,minutely,hourly,alerts";
-        var url = "https://api.openweathermap.org/data/2.5/onecall?lat="+lat+"&lon="+lon+"&exclude="+omit+"&appid="+apikey;
+        var url = weatherParser.createUrl(cityName, lat, lon, apikey);
         console.log("url: ", url);
         xhttp.open("GET", url);
         xhttp.send();

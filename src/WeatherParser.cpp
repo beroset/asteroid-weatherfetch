@@ -61,6 +61,20 @@ void WeatherParser::parseWeatherJson(const QString &weatherJson)
     settings->set_int("timestamp-day0", (int)time(NULL));
 }
 
+QString WeatherParser::createUrl(QString cityName, QString lat, QString lon, QString apikey) const
+{
+    static const QString omit = "current,minutely,hourly,alerts";
+    if (apikey == "" || cityName == "" || lat == "" || lon == "") {
+        return "";
+    }
+    QString url = "https://api.openweathermap.org/data/2.5/onecall"
+        "?lat=" + lat
+        + "&lon=" + lon
+        + "&exclude=" + omit
+        + "&appid=" + apikey;
+    return url;
+}
+
 WeatherParser::WeatherParser()
 {
     Glib::init();
