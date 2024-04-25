@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
     QObject::connect(&fetcher, &UrlFetcher::receivedData, &wf, &WeatherFetcher::receivedData, Qt::DirectConnection);
     QObject::connect(&wf, &WeatherFetcher::update, &parser, &WeatherParser::update, Qt::DirectConnection);
     QObject::connect(&parser, &WeatherParser::done, &app, &QCoreApplication::quit, Qt::DirectConnection);
-    auto url{wf.createUrl()};
+    auto url{parser.createUrl(wf.getCityName(), wf.getCityLatitude(), wf.getCityLongitude(), wf.getApikey())};
     qInfo() << "Setting url to " << url;
     fetcher.fetch(url);
     return app.exec();
