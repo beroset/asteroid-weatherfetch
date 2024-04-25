@@ -62,20 +62,6 @@ WeatherFetcher::WeatherFetcher(QObject *parent) : QObject(parent)
     top.endGroup();
 }
 
-QString WeatherFetcher::createUrl() const
-{
-    static const QString omit = "current,minutely,hourly,alerts";
-    if (apikey == "" || getCityName() == "" || getCityLatitude() == "" || getCityLongitude() == "") {
-        return "";
-    }
-    QString url = "https://api.openweathermap.org/data/2.5/onecall"
-        "?lat=" + getCityLatitude()
-        + "&lon=" + getCityLongitude()
-        + "&exclude=" + omit
-        + "&appid=" + getApikey();
-    return url;
-}
-
 WeatherFetcher::~WeatherFetcher()
 {
     qDebug() << "destroying WeatherFetcher";

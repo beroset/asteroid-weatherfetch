@@ -34,7 +34,6 @@ public:
     QString getCityName() const;
     QString getCityLatitude() const;
     QString getCityLongitude() const;
-    QString createUrl() const;
 
 signals:
     void update(QString* cityname, QString* weatherJson);

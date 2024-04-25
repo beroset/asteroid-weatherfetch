@@ -96,10 +96,7 @@ void WeatherParser::update(QString* cityname, QString* weatherJson)
         qDebug() << "Error!  arguments to WeatherParser::update were null";
         emit done();
     }
-    qDebug() << "Cityname: " << *cityname;
-    setCityName(*cityname);
-    qDebug() << "Json weather string: " << *weatherJson;
-    parseWeatherJson(*weatherJson);
+    updateWeather(*cityname, *weatherJson);
     g_settings_sync();
     emit done();
 }
