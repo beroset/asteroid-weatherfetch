@@ -23,23 +23,17 @@
 #include <QString>
 #include <QJsonArray>
 
-class WeatherFetcher : public QObject
+class WeatherSettings : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit WeatherFetcher(QObject *parent = nullptr);
-    ~WeatherFetcher();
+    explicit WeatherSettings(QObject *parent = nullptr);
+    ~WeatherSettings();
     QString getApikey() const;
     QString getCityName() const;
     QString getCityLatitude() const;
     QString getCityLongitude() const;
-
-signals:
-    void update(QString* cityname, QString* weatherJson);
-
-public slots:
-    void receivedData(QString data);
 
 private:
     QString apikey;
