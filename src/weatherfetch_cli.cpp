@@ -1,5 +1,5 @@
 
-#include "WeatherFetcher.h"
+#include "WeatherSettings.h"
 #include "WeatherParser.h"
 #include "UrlFetcher.h" 
 
@@ -13,16 +13,14 @@ int main(int argc, char *argv[])
     QCoreApplication app(argc, argv);
     QCoreApplication::setApplicationName("weatherfetch_cli");
     QCoreApplication::setApplicationVersion("1.0");
-    WeatherFetcher wf;
+    WeatherSettings ws;
     UrlFetcher fetcher;
     WeatherParser parser;
-    QObject::connect(&fetcher, &UrlFetcher::receivedData, &wf, &WeatherFetcher::receivedData, Qt::DirectConnection);
-    QObject::connect(&wf, &WeatherFetcher::update, &parser, &WeatherParser::update, Qt::DirectConnection);
+    QObject::connect(&fetcher, &UrlFetcher::receivedData, &parser, &WeatherParser::receivedData, Qt::DirectConnection);
     QObject::connect(&parser, &WeatherParser::done, &app, &QCoreApplication::quit, Qt::DirectConnection);
-    auto url{parser.createUrl(wf.getCityName(), wf.getCityLatitude(), wf.getCityLongitude(), wf.getApikey())};
+    auto url{parser.createUrl(ws.getCityName(), ws.getCityLatitude(), ws.getCityLongitude(), ws.getApikey())};
     qInfo() << "Setting url to " << url;
     fetcher.fetch(url);
     return app.exec();
 }
-
 

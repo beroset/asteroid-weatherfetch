@@ -33,6 +33,7 @@ public:
 
 public slots:
     void update(QString* cityname, QString* weatherJson);
+    void receivedData(QString data);
 
 signals:
     void done();

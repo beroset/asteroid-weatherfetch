@@ -16,11 +16,11 @@
  *
  */
 
-#include "WeatherFetcher.h"
-#include "WeatherParser.h"
+#include "WeatherSettings.h"
 #include "UrlFetcher.h"
 #include <QSettings>
 #include <QDebug>
+#include <QJsonDocument>
 #include <iostream>
 
 /* This needs to fetch the apikey, city name, lat and long from the asteroid-weather config
@@ -28,27 +28,27 @@
  * Then fetch the data from the URL using URLFetcher
  * Then pass city name and fetched data to the WeatherParser
  */
-QString WeatherFetcher::getApikey() const
+QString WeatherSettings::getApikey() const
 {
     return apikey;
 }
 
-QString WeatherFetcher::getCityName() const
+QString WeatherSettings::getCityName() const
 {
     return locations.first()["name"].toString();
 }
 
-QString WeatherFetcher::getCityLatitude() const
+QString WeatherSettings::getCityLatitude() const
 {
     return locations.first()["lat"].toString();
 }
 
-QString WeatherFetcher::getCityLongitude() const
+QString WeatherSettings::getCityLongitude() const
 {
     return locations.first()["lng"].toString();
 }
 
-WeatherFetcher::WeatherFetcher(QObject *parent) : QObject(parent)
+WeatherSettings::WeatherSettings(QObject *parent) : QObject(parent)
 {
     QSettings top("asteroid-weatherfetch", "asteroid-weatherfetch");
     top.beginGroup("Weather");
@@ -62,15 +62,7 @@ WeatherFetcher::WeatherFetcher(QObject *parent) : QObject(parent)
     top.endGroup();
 }
 
-WeatherFetcher::~WeatherFetcher()
+WeatherSettings::~WeatherSettings()
 {
-    qDebug() << "destroying WeatherFetcher";
-}
-
-void WeatherFetcher::receivedData(QString data)
-{
-    weatherData = data;
-    qInfo() << "WxData = " << weatherData;
-    qInfo() << "CityName = " << cityName;
-    emit update(&cityName, &weatherData);
+    qDebug() << "destroying WeatherSettings";
 }

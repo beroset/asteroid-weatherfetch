@@ -20,6 +20,8 @@
 #include "WeatherParser.h"
 #include <QDebug>
 
+static QString tempcityname;
+
 void WeatherParser::setCityName(const QString &cityName)
 {
     const Glib::RefPtr<Gio::Settings> settings = Gio::Settings::create("org.asteroidos.weather");
@@ -67,6 +69,7 @@ QString WeatherParser::createUrl(QString cityName, QString lat, QString lon, QSt
     if (apikey == "" || cityName == "" || lat == "" || lon == "") {
         return "";
     }
+    tempcityname = cityName;
     QString url = "https://api.openweathermap.org/data/2.5/onecall"
         "?lat=" + lat
         + "&lon=" + lon
@@ -101,3 +104,9 @@ void WeatherParser::update(QString* cityname, QString* weatherJson)
     emit done();
 }
 
+void WeatherParser::receivedData(QString data)
+{
+    qInfo() << "WxData = " << data;
+    qInfo() << "CityName = " << tempcityname;
+    emit update(&tempcityname, &data);
+}
