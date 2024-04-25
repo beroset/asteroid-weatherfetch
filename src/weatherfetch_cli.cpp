@@ -1,7 +1,7 @@
 
 #include "WeatherSettings.h"
 #include "WeatherParser.h"
-#include "UrlFetcher.h" 
+#include "UrlFetcher.h"
 
 #include <QCoreApplication>
 #include <QUrl>
@@ -16,7 +16,11 @@ int main(int argc, char *argv[])
     WeatherSettings ws;
     UrlFetcher fetcher;
     WeatherParser parser;
-    QObject::connect(&fetcher, &UrlFetcher::receivedData, &parser, &WeatherParser::receivedData, Qt::DirectConnection);
+    QObject::connect(&fetcher,
+                     &UrlFetcher::receivedData,
+                     &parser,
+                     std::bind(&WeatherParser::update, &parser, ws.getCityName(), _1),
+                     Qt::DirectConnection);
     QObject::connect(&parser, &WeatherParser::done, &app, &QCoreApplication::quit, Qt::DirectConnection);
     auto url{parser.createUrl(ws.getCityName(), ws.getCityLatitude(), ws.getCityLongitude(), ws.getApikey())};
     qInfo() << "Setting url to " << url;

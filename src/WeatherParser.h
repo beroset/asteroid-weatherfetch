@@ -32,8 +32,7 @@ public:
     Q_INVOKABLE QString createUrl(QString cityname, QString lat, QString lon, QString apikey) const;
 
 public slots:
-    void update(QString* cityname, QString* weatherJson);
-    void receivedData(QString data);
+    void update(QString cityname, QString weatherJson);
 
 signals:
     void done();
