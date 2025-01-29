@@ -15,6 +15,7 @@ target_link_libraries(weatherfetch PUBLIC Qt5::Qml
         PRIVATE Qt5::Core Qt5::Network PkgConfig::GIOMM)
 
 add_executable(weatherfetch_cli weatherfetch_cli.cpp WeatherSettings.cpp UrlFetcher.cpp)
+set_target_properties(weatherfetch_cli PROPERTIES CXX_STANDARD 20)
 target_link_libraries(weatherfetch_cli PRIVATE weatherfetch)
 
 install(TARGETS asteroid-weatherfetch weatherfetch_cli

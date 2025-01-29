@@ -30,6 +30,8 @@ class WeatherSettings : public QObject
 public:
     explicit WeatherSettings(QObject *parent = nullptr);
     ~WeatherSettings();
+    void addLocation(float lat, float lng, QString name);
+    void update();
     QString getApikey() const;
     QString getCityName() const;
     QString getCityLatitude() const;
