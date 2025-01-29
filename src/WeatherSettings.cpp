@@ -21,7 +21,9 @@
 #include <QSettings>
 #include <QDebug>
 #include <QJsonDocument>
+#include <QJsonObject>
 #include <iostream>
+#include <format>
 
 /* This needs to fetch the apikey, city name, lat and long from the asteroid-weather config
  * Then construct the url
@@ -65,4 +67,26 @@ WeatherSettings::WeatherSettings(QObject *parent) : QObject(parent)
 WeatherSettings::~WeatherSettings()
 {
     qDebug() << "destroying WeatherSettings";
+}
+
+void WeatherSettings::addLocation(float lat, float lng, QString name)
+{
+    QString latstring = QString::fromStdString(std::format("{:.4f}", lat));
+    QString lngstring = QString::fromStdString(std::format("{:.4f}", lng));
+    QJsonObject newloc{
+        { "name", name },
+        { "lat", latstring },
+        { "lng", lngstring }
+    };
+    locations.push_front(newloc);
+}
+
+void WeatherSettings::update()
+{
+    QSettings top("asteroid-weatherfetch", "asteroid-weatherfetch");
+    auto jdoc = QJsonDocument(locations);
+    QString loc = QString::fromStdString(
+        jdoc.toJson(QJsonDocument::Compact).toStdString()
+    );
+    top.setValue("Weather/savedlocations", loc);
 }
