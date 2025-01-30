@@ -22,6 +22,7 @@
 #include <QObject>
 #include <QString>
 #include <QJsonArray>
+#include <iostream>
 
 class WeatherSettings : public QObject
 {
@@ -30,14 +31,19 @@ class WeatherSettings : public QObject
 public:
     explicit WeatherSettings(QObject *parent = nullptr);
     ~WeatherSettings();
-    void addLocation(float lat, float lng, QString name);
+    void addLocation(float lat, float lng, QString name, bool atEnd = false);
     void update();
     QString getApikey() const;
     QString getCityName() const;
     QString getCityLatitude() const;
     QString getCityLongitude() const;
+    void removeLast();
+    void rotate();
+    friend std::ostream& operator<<(std::ostream& out, const WeatherSettings& ws);
 
 private:
+    void addLocation(QString lat, QString lng, QString name, bool atEnd = false);
+
     QString apikey;
     QJsonArray locations;
     QString cityName;
