@@ -69,16 +69,24 @@ WeatherSettings::~WeatherSettings()
     qDebug() << "destroying WeatherSettings";
 }
 
-void WeatherSettings::addLocation(float lat, float lng, QString name)
-{
+void WeatherSettings::addLocation(float lat, float lng, QString name, bool atEnd) {
     QString latstring = QString::fromStdString(std::format("{:.4f}", lat));
     QString lngstring = QString::fromStdString(std::format("{:.4f}", lng));
+    addLocation(latstring, lngstring, name, atEnd);
+}
+
+void WeatherSettings::addLocation(QString latstring, QString lngstring, QString name, bool atEnd)
+{
     QJsonObject newloc{
         { "name", name },
         { "lat", latstring },
         { "lng", lngstring }
     };
-    locations.push_front(newloc);
+    if (atEnd) {
+        locations.push_back(newloc);
+    } else {
+        locations.push_front(newloc);
+    }
 }
 
 void WeatherSettings::update()
@@ -89,4 +97,28 @@ void WeatherSettings::update()
         jdoc.toJson(QJsonDocument::Compact).toStdString()
     );
     top.setValue("Weather/savedlocations", loc);
+}
+
+void WeatherSettings::rotate()
+{
+    addLocation(getCityLatitude(), getCityLongitude(), getCityName(), true);
+    locations.removeFirst();
+}
+
+void WeatherSettings::removeLast()
+{
+    locations.removeLast();
+}
+
+std::ostream& operator<<(std::ostream& out, const WeatherSettings& ws) 
+{
+    int i{0};
+    out << "length is " << ws.locations.size() << '\n';
+    for (int i{0}; i < ws.locations.size(); ++i) {
+        out << ws.locations.at(i)["lat"].toString().toStdString()
+            << "," << ws.locations.at(i)["lng"].toString().toStdString()
+            << ",\"" << ws.locations.at(i)["name"].toString().toStdString()
+            << "\"\n";
+    }
+    return out;
 }
