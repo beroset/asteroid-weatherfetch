@@ -2,6 +2,11 @@
 This app uses an internet connection from the watch to fetch weather forecast data to be used for the Weather app in [AsteroidOS](http://asteroidos.org/)
 
 ## GUI version
+The GUI version allows the user to directly enter locations on the watch or manipulate the order by drag-and-drop.
+
+<img src="https://github.com/beroset/asteroid-weatherfetch/blob/master/screenshot20250131_145414.jpg"/>
+The rest of the GUI screen looks like this:
+<img src="https://github.com/beroset/asteroid-weatherfetch/blob/master/screenshot20250131_145515.jpg"/>
 
 ## Command-line version
 There is also a command-line version called `weatherfetch_cli` which is intended to be used from a command line.  On the watch command line as the `ceres` user, one can run the command with no arguments to fetch the weather forecast for the previously configured location.
