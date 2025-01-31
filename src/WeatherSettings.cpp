@@ -53,6 +53,7 @@ QString WeatherSettings::getCityLongitude() const
 WeatherSettings::WeatherSettings(QObject *parent) : QObject(parent)
 {
     QSettings top("asteroid-weatherfetch", "asteroid-weatherfetch");
+    top.setIniCodec("UTF-8");
     top.beginGroup("Weather");
     apikey = top.value("apikey", QString()).toString();
     auto inter = top.value("savedlocations", QString()).toString();
@@ -92,6 +93,7 @@ void WeatherSettings::addLocation(QString latstring, QString lngstring, QString 
 void WeatherSettings::update()
 {
     QSettings top("asteroid-weatherfetch", "asteroid-weatherfetch");
+    top.setIniCodec("UTF-8");
     auto jdoc = QJsonDocument(locations);
     QString loc = QString::fromStdString(
         jdoc.toJson(QJsonDocument::Compact).toStdString()
@@ -113,7 +115,6 @@ void WeatherSettings::removeLast()
 std::ostream& operator<<(std::ostream& out, const WeatherSettings& ws) 
 {
     int i{0};
-    out << "length is " << ws.locations.size() << '\n';
     for (int i{0}; i < ws.locations.size(); ++i) {
         out << ws.locations.at(i)["lat"].toString().toStdString()
             << "," << ws.locations.at(i)["lng"].toString().toStdString()
