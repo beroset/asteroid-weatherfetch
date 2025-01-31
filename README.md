@@ -14,14 +14,18 @@ weatherfetch_cli -cl --add 50.812375,4.380734,"Université libre de Bruxelles"
 
 In the following, TOL means Top-Of-List and BOL means Bottom-Of-List.  These refer to the saved location list.  Here are the possible commands
 
-```
- -a or --add lat lng name  add a location to TOL
- -l or --list       list all current locations
- -r or --rotate     rotate the list to put TOL at BOL
- -d or --delete     delete BOL
- -c or --config     manipulate the list but don't fetch weather
-```
-
+<table>
+<thead>
+<tr><th>Short</th><th>Long</th><th>Args</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td>-a</td><td>--add</td><td>lat,lng,name</td><td>add the location to top of list (TOL)</tr>
+<tr><td>-c</td><td>--config</td><td></td><td>manipulate the list but don't fetch weather</td></tr>
+<tr><td>-d</td><td>--delete</td><td></td><td>delete BOL</td></tr>
+<tr><td>-l</td><td>--list</td><td></td><td>list all current locations</td></tr>
+<tr><td>-r</td><td>--rotate</td><td></td><td>rotate the list to put TOL at BOL</td></tr>
+</tbody>
+</table>
 These should always execute in the order "rotate", "delete", "add", "list", "config" no matter their order on the command line. The (admittedly weak) reasoning for this order is that one can do simple testing with something like this:
 
 ```
