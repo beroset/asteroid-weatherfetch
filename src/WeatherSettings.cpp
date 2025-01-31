@@ -56,8 +56,8 @@ WeatherSettings::WeatherSettings(QObject *parent) : QObject(parent)
     top.setIniCodec("UTF-8");
     top.beginGroup("Weather");
     apikey = top.value("apikey", QString()).toString();
-    auto inter = top.value("savedlocations", QString()).toString();
-    auto jdoc = QJsonDocument::fromJson(inter.toUtf8());
+    auto inter = top.value("savedlocations", QString()).toByteArray();
+    auto jdoc = QJsonDocument::fromJson(inter);
     locations = jdoc.array();
     qDebug() << "filename = " << top.fileName();
     qDebug() << getCityName() << " ( " << getCityLatitude() << " , " << getCityLongitude() << " )";
@@ -95,9 +95,7 @@ void WeatherSettings::update()
     QSettings top("asteroid-weatherfetch", "asteroid-weatherfetch");
     top.setIniCodec("UTF-8");
     auto jdoc = QJsonDocument(locations);
-    QString loc = QString::fromStdString(
-        jdoc.toJson(QJsonDocument::Compact).toStdString()
-    );
+    QByteArray loc{jdoc.toJson(QJsonDocument::Compact)};
     top.setValue("Weather/savedlocations", loc);
 }
 
