@@ -6,11 +6,11 @@ This app uses an internet connection from the watch to fetch weather forecast da
 
 The GUI version allows the user to directly enter locations on the watch or manipulate the order by drag-and-drop.
 
-![Screenshot 2](./screenshot20250131_145414.jpg)
+![Screenshot 1](./screenshot20250131_145414.jpg)
 
 The rest of the GUI screen looks like this:
 
-![Screenshot 1](./screenshot20250131_145515.jpg)
+![Screenshot 2](./screenshot20250131_145515.jpg)
 
 ## Command-line version
 
