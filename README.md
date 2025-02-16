@@ -43,7 +43,7 @@ And the effect is that each time it is run, it will rotate the top entry to the 
 
 ## Build
 
-First Download and install the SDK as described at [wiki.asteroidos.org](https://wiki.asteroidos.org/index.php/Installing_the_SDK)
+First download and install the SDK as described at [wiki.asteroidos.org](https://wiki.asteroidos.org/index.php/Installing_the_SDK)
 
 Then clone and compile by executing the following commands:
 
