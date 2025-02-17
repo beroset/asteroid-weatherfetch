@@ -43,36 +43,4 @@ And the effect is that each time it is run, it will rotate the top entry to the 
 
 ## Build
 
-First download and install the SDK as described at [wiki.asteroidos.org](https://wiki.asteroidos.org/index.php/Installing_the_SDK)
-
-Then clone and compile by executing the following commands:
-
-```bash
-# Get source distribution
-git clone https://github.com/beroset/asteroid-weatherfetch.git
-cd asteroid-weatherfetch
-
-# Compile
-export CMAKE_PROGRAM_PATH=/usr/local/oecore-x86_64/sysroots/armv7vehf-neon-oe-linux-gnueabi/usr/bin
-source /usr/local/oecore-x86_64/environment-setup-armv7vehf-neon-oe-linux-gnueabi
-cmake -B build
-cmake --build build
-```
-
-See [wiki.asteroidos.org](https://wiki.asteroidos.org/index.php/Creating_an_Asteroid_app) for more build instructions
-
-## Install
-
-```bash
-# Install distribution to `./build/install`
-cmake --install build --prefix build/install
-
-# Install to watch
-scp -r build/install/* root@192.168.2.15:/usr/
-
-# Install dependency on the watch (enable ip connection first)
-ssh root@192.168.2.15 'install nemo-qml-plugin-notifications'
-```
-
-See [wiki.oasteroidos.org](https://wiki.asteroidos.org/index.php/IP_Connection) on how to enable an ip connection.
-
+The preferred method to build and install this software is to use `bitbake` or `devtool`.  See https://wiki.asteroidos.org/index.php/OpenEmbedded for detailed information on how to do this.
