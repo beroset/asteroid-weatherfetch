@@ -16,7 +16,7 @@ void UrlFetcher::fetch(QUrl url)
 
 void UrlFetcher::replyFinished(QNetworkReply *reply) {
     auto err = reply->error();
-    if (err) {
+    if (err != QNetworkReply::NoError) {
         qInfo() << "Error:" << err;
     }
     QString str = reply->readAll();
