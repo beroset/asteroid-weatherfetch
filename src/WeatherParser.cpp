@@ -230,7 +230,7 @@ void WeatherParser::update(QString cityname, QString weatherJson)
     using namespace std::chrono_literals;
     if (cityname == nullptr || weatherJson == nullptr) {
         qDebug() << "Error: arguments to WeatherParser::update were null";
-        emit exit(1);
+        exit(1);
     }
     updateWeather(cityname, weatherJson);
     g_settings_sync();
