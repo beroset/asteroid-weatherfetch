@@ -2,7 +2,7 @@ add_library(asteroid-weatherfetch main.cpp resources.qrc)
 set_target_properties(asteroid-weatherfetch PROPERTIES PREFIX "" SUFFIX "")
 target_link_libraries(asteroid-weatherfetch PUBLIC
         Qt5::Qml
-	AsteroidApp
+	Asteroid::AsteroidApp
         weatherfetch)
 
 add_library(weatherfetch WeatherParser.cpp)
