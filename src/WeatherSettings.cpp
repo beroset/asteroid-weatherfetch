@@ -53,7 +53,6 @@ QString WeatherSettings::getCityLongitude() const
 WeatherSettings::WeatherSettings(QObject *parent) : QObject(parent)
 {
     QSettings top("asteroid-weatherfetch", "asteroid-weatherfetch");
-    top.setIniCodec("UTF-8");
     top.beginGroup("Weather");
     apikey = top.value("apikey", QString()).toString();
     auto inter = top.value("savedlocations", QString()).toByteArray();
@@ -93,7 +92,6 @@ void WeatherSettings::addLocation(QString latstring, QString lngstring, QString 
 void WeatherSettings::update()
 {
     QSettings top("asteroid-weatherfetch", "asteroid-weatherfetch");
-    top.setIniCodec("UTF-8");
     auto jdoc = QJsonDocument(locations);
     QByteArray loc{jdoc.toJson(QJsonDocument::Compact)};
     top.setValue("Weather/savedlocations", loc);
