@@ -27,7 +27,7 @@ class Q_DECL_EXPORT WeatherParser : public QObject
     Q_OBJECT
 
 public:
-    WeatherParser();
+    WeatherParser() = default;
     Q_INVOKABLE void updateWeather(QString cityname, QString weatherJson);
     Q_INVOKABLE QString createUrl(QString cityname, QString lat, QString lon, QString apikey) const;
 
