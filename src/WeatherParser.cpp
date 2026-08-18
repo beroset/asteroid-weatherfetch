@@ -16,7 +16,7 @@
  *
  */
 
-#include <giomm.h>
+#include <MDConfItem>
 #include "WeatherParser.h"
 #include <QDebug>
 #include <vector>
@@ -192,8 +192,7 @@ QString WeatherParser::createUrl(QString cityName, QString lat, QString lon, QSt
 
 void WeatherParser::setCityName(const QString &cityName)
 {
-    const Glib::RefPtr<Gio::Settings> settings = Gio::Settings::create("org.asteroidos.weather");
-    settings->set_string("city-name", cityName.toUtf8().data());
+    MDConfItem("/org/asteroidos/weather/city-name").set(cityName);
 }
 
 void WeatherParser::parseWeatherJson(const QString &weatherJson)
@@ -202,19 +201,11 @@ void WeatherParser::parseWeatherJson(const QString &weatherJson)
     auto days{weatherJsonToVector(weatherJson)};
     unsigned count{std::min(maxWeatherDays, days.size())};
     for (unsigned i = 0; i < count; ++i) {
-        const Glib::RefPtr<Gio::Settings> settings = Gio::Settings::create("org.asteroidos.weather.day" + std::to_string(i));
-        settings->set_int("min-temp", days[i].mintemp);
-        settings->set_int("max-temp", days[i].maxtemp);
-        settings->set_int("id", days[i].icon);
+        MDConfItem(QString("/org/asteroidos/weather/day%1/id").arg(i)).set(days[i].icon);
+        MDConfItem(QString("/org/asteroidos/weather/day%1/min-temp").arg(i)).set(days[i].mintemp);
+        MDConfItem(QString("/org/asteroidos/weather/day%1/max-temp").arg(i)).set(days[i].maxtemp);
     }
-    const Glib::RefPtr<Gio::Settings> settings = Gio::Settings::create("org.asteroidos.weather");
-    settings->set_int("timestamp-day0", (int)time(NULL));
-}
-
-WeatherParser::WeatherParser()
-{
-    Glib::init();
-    Gio::init();
+    MDConfItem(QString("/org/asteroidos/weather/timestamp-day0")).set((int)time(NULL));
 }
 
 void WeatherParser::updateWeather(QString cityname, QString weatherJson)
@@ -233,6 +224,5 @@ void WeatherParser::update(QString cityname, QString weatherJson)
         exit(1);
     }
     updateWeather(cityname, weatherJson);
-    g_settings_sync();
     emit done();
 }
